@@ -176,6 +176,20 @@
 				display: inline-block;
 			}
 
+            .mapboxgl-popup-content {
+
+                font-size: 12px;
+                font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                line-height: 20px;
+                color:white;
+                opacity: 80%;
+                overflow:visible;
+                background-color: black;
+                width:fit-content;
+            }
+
+
+
 
 
   
@@ -222,7 +236,7 @@ map.on('load', function() {
     "paint": {
 
       "circle-stroke-color": "grey",
-      "circle-stroke-width": 0.2,
+      "circle-stroke-width": 0.1,
 
       'circle-radius': {
 'base': 1.75,
@@ -242,9 +256,9 @@ map.on('load', function() {
 'T130-B�rsennotiertes Wohnungsunternehmen',
 '#e55e5e',
 'T210-Privates Wohnungsunternehmen',
-'#3bb2d0',
+'#e06377',
 'T221-Privateigent�mer (anonym)',
-'black',
+'pink',
 'T300-Kleines Privateigentum',
 '#E36414',
 'T223-Privateigent�mer (teilweise bekannt)',
@@ -255,34 +269,13 @@ map.on('load', function() {
 '#5F0F40',
 'T510-Genossenschaft',
 '#85B79D',
+'T530-Staatlich',
+'#5b9aa0',
 'T110-Investor',
 '#F25F5C',
-'1980',
-'#247BA0',
-'1979',
-'#F26CA7',
-'1978',
-'#947BD3',
-'1977',
-'#FCDC4D',
-'1976',
-'#CEEC97',
-'1975',
-'#F4F7BE',
-'1974',
-'#DEBA6F',
-'1973',
-'#E5F77D',
-'1972',
-'#ECCBD9',
-'1971',
-'#97D2FB',
-'1970',
-'#AF1B3F',
-'1969',
-'#D4DCFF',
 
-/* other */ 'yellow'
+
+/* other */ '#f9d5e5'
 ]
 }
 });
@@ -295,9 +288,11 @@ map.on('load', function() {
 map.on('click', 'trautvetter', function (e) {
 new mapboxgl.Popup()
 .setLngLat(e.lngLat)
-.setHTML( "<bl>" + "Typ:" + "</bl>" + "<br>" + e.features[0].properties.Typ)
+.setHTML("<b>" + "Um welchen Eigentümer handelt es sich hier?" + "</b>" + "<br>" + "<br>" + "<b>" + "Eigentümer:"+ "</b>" + "<br>" + e.features[0].properties.Typ  + "<br>" + "<b>" + "Straße:" + "</b>" + "<br>" + e.features[0].properties.Street+
+"&nbsp" + e.features[0].properties.houseNumbe)
 .addTo(map);
 });
+
 
 
 // Change the cursor to a pointer when the mouse is over the states layer.
