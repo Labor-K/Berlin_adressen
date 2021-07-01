@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Eigentümerübersicht in Berlin</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css" rel="stylesheet" />
+
+
+<div id='map'></div>
+<div class='map-overlay' id='features'><h2> <br>Übersicht Eigentümer <h2>
+  
+    <p id="paragraph"> <b>Dies ist ein Typoblindtext.</b> <br>
+		An ihm kann man sehen, ob alle Buchstaben <br>
+		da sind und wie sie aussehen. 
+    Manchmal <br> benutzt man Worte wie Hamburgefonts, Rafgenduks oder Handgloves, um Schriften zu testen. 
+    Manchmal Sätze, die alle Buchstaben des Alphabets enthalten - man nennt diese Sätze "Pangrams". 
+    Sehr bekannt ist dieser: The quick brown fox jumps over the lazy old dog. 
+
+    Oft werden in Typoblindtexte auch fremdsprachige Satzteile eingebaut (AVAIL and Wefox are testing aussi la Kerning), 
+    um die Wirkung in anderen Sprachen zu testen. In Lateinisch sieht zum Beispiel fast jede Schrift gut aus. Quod erat demonstrandum. 
+    Seit 1975 fehlen in den meisten Testtexten die Zahlen, weswegen nach <br>TypoGb. 204 § ab dem </p>
+
+  <br>
+
+
+<div class='map-overlay' id='legend'></div>
+
+
+
+<body>
+
+
+
+
+
+<style>
+
+
+	body { margin: 0; padding: 0; }
+	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+
+
+			.map-overlay {
+  position:relative;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: 20px;
+  margin-top:10px;
+  width:300px;
+  height: auto;;
+  background: rgba(58, 57, 57, 0.8);
+  margin-right:auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, sans-serif;
+  overflow:hidden;
+  border-radius: 5px;
+  
+}
+
+			
+            .paragraph {
+				
+				color: springgreen;
+			}
+
+			
+
+			#btn1  {
+				width: 100px;
+				cursor: pointer;
+				border-radius: 8px;
+				font-family: 'IBM Plex Serif', serif;
+				font-size: 14px;
+				font-weight: 400;
+			}
+
+			#btn2{
+				width: 100px;
+				cursor: pointer;
+				border-radius: 8px;
+				font-family: 'IBM Plex Serif', serif;
+				font-size: 14px;
+				font-weight: 400;
+			}
+
+			#btn1:hover {
+  				background-color:yellow/* Green */
+			}
+
+			#btn2:hover {
+  				background-color:yellow/* Green */
+			}
+
+			h2 {
+				font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+				font-size: 28px;
+				font-weight: bold;
+				margin: 0 0 2%;
+                color: seashell;
+			}
+			h3 {
+				font-family: 'IBM Plex Serif', serif;
+				font-size: 14px;
+				font-weight: 600;
+				margin: 3% 0 2.5%;
+
+			}
+
+			span {
+				font-size: 12px;
+			}
+
+			p {
+				font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+				font-size: 14px;
+				font-weight: 400;
+				margin: 0 0 4%;
+				font-size: 11px;
+				font-weight: lighter;
+
+			}
+			#pop{
+				font-family: 'IBM Plex Serif', serif;
+				font-size: 16px;
+				font-weight: 200;
+				position: relative;
+			}
+
+			.active {
+  				background-color: #666;
+  				color: white;
+			}
+
+
+			summary {
+  				margin-bottom: 2%;
+			}
+
+			#legend {
+
+
+top: auto;
+padding: 0px;
+line-height: 18px;
+height:auto;
+margin-bottom: 30px;
+width: 300px;
+font-style:normal;
+font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+font-size: smaller;
+background-color: rgba(245, 245, 245, 0);
+font-weight: lighter;
+
+}
+			.legend-key {
+				position:relative;
+
+display:inline-block;		
+border-radius: 20%;
+width: 10px;
+height: 10px;
+margin-right: 5px;
+padding-left: 0%;
+
+}
+
+					
+
+            .mapboxgl-popup-content {
+
+                font-size: 12px;
+                font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                line-height: 20px;
+                color:white;
+                opacity: 80%;
+                overflow:visible;
+                background-color: rgba(58, 57, 57, 0.8);
+                width:fit-content;
+				border-radius: 20px;
+            }
+
+
+#mapboxgl-ctrl-geocoder {
+
+font-size: 12px;
+font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+line-height: 20px;
+color:white;
+opacity: 80%;
+overflow:visible;
+background-color: black;
+width:fit-content;
+}
+
+
+
+  
+</style>
+
+
+
+	
+
+<body>
+
+	<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+	<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
+
+
+	<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+
+<div id="map"></div>
+
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoidGltbmViZXJ0IiwiYSI6ImNqd2tpa3oyZTByMzU0OHA2aWhtdWFqMmoifQ.Tu1TU-A-DQIkIXL2shsdRA';
+
+
+
+    
+var map = new mapboxgl.Map({
+container: 'map',
+style: 'mapbox://styles/timnebert/ckq81122k3jx417rr7y0rnyeq',
+zoom: 12,
+center: [13.364091607253624, 52.599617811496088]
+});
+
+
+
+
+var layers = ['T112-Investor (Rente)', 'T120-Asset Manager\/Fonds', 'T130-B�rsennotiertes Wohnungsunternehmen', 'T210-Privates Wohnungsunternehmen', 'T221-Privateigent�mer (anonym)', 
+'T300-Kleines Privateigentum', 'T223-Privateigent�mer (teilweise bekannt)', 'T600-Land Berlin'];
+var colors = ['#fbb03b', '#E7E73B', '#e55e5e', '#e06377', 'pink', '#E36414', '#5F0F40', '#CAFF33'];
+
+
+
+
+for (i = 0; i < layers.length; i++) {
+  var layer = layers[i];
+  var color = colors[i];
+  var item = document.createElement('div');
+  var key = document.createElement('span');
+  key.className = 'legend-key';
+  key.style.backgroundColor = color;
+
+  var value = document.createElement('span');
+  value.innerHTML = layer;
+  item.appendChild(key);
+  item.appendChild(value);
+  legend.appendChild(item);
+}
+
+
+
+map.on('load', function() {
+  map.addLayer({
+    id: 'trautvetter',
+    type: 'circle',
+    source: {
+      type: 'geojson',
+      data: 'https://raw.githubusercontent.com/Labor-K/Berlin_adressen/main/_Adressen_final.geojson' // replace this with the url of your own geojson
+    }, 
+
+    "paint": {
+
+      "circle-stroke-color": "grey",
+      "circle-stroke-width": 0.1,
+
+      'circle-radius': {
+'base': 1.75,
+'stops': [
+[12, 2],
+[22, 180]
+]
+},
+
+'circle-color': [
+'match',
+['get', 'Typ'],
+'T112-Investor (Rente)',
+'#fbb03b',
+'T120-Asset Manager\/Fonds',
+'#E7E73B',
+'T130-B�rsennotiertes Wohnungsunternehmen',
+'#e55e5e',
+'T210-Privates Wohnungsunternehmen',
+'#e06377',
+'T221-Privateigent�mer (anonym)',
+'pink',
+'T300-Kleines Privateigentum',
+'#E36414',
+'T223-Privateigent�mer (teilweise bekannt)',
+'#5F0F40',
+'T600-Land Berlin',
+'#CAFF33',
+'T520-Gemeinn�tzig',
+'#5F0F40',
+'T510-Genossenschaft',
+'#85B79D',
+'T530-Staatlich',
+'#5b9aa0',
+'T110-Investor',
+'#F25F5C',
+'T510-Kirchlich',
+'#33FF83',
+'T222-Privateigentuemer (bekannt)',
+'#FFE333',
+'T111-Investor (privat)',
+'#EA7FC1',
+
+
+/* other */ '#f9d5e5'
+]
+}
+});
+});
+
+
+var popup = new mapboxgl.Popup({
+closeButton: false,
+closeOnClick: false
+});
+
+
+// Create a popup, but don't add it to the map yet.
+
+
+ 
+map.on('mouseenter', 'trautvetter', function (e) {
+// Change the cursor style as a UI indicator.
+map.getCanvas().style.cursor = 'pointer';
+ 
+var coordinates = e.features[0].geometry.coordinates.slice();
+var description = e.features[0].properties.description;
+ 
+// Ensure that if the map is zoomed out such that multiple
+// copies of the feature are visible, the popup appears
+// over the copy being pointed to.
+while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+}
+ 
+// Populate the popup and set its coordinates
+// based on the feature found.
+popup.setLngLat(coordinates).setHTML(("<b>" + "Um welchen Eigentümer handelt es sich hier?" + "</b>" + "<br>" + "<br>" + "<b>" + "Eigentümer:"+ "</b>" + "<br>" + e.features[0].properties.Typ  + "<br>" + "<b>" + "Straße:" + "</b>" + "<br>" + e.features[0].properties.Adresse+
+	"&nbsp" + e.features[0].properties.housenumber)).addTo(map);
+});
+ 
+map.on('mouseleave', 'trautvetter', function () {
+map.getCanvas().style.cursor = '';
+popup.remove();
+
+});
+
+map.addControl(
+new MapboxGeocoder({
+accessToken: mapboxgl.accessToken,
+mapboxgl: mapboxgl
+})
+);
+
+</script>
+ 
+</body>
+</html>
+
